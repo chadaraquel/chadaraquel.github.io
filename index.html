@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chá de Lingerie</title>
+<meta name="description" content="Sábado, 31 de outubro, às 14h30, na Fábula de Doces. Confirme sua presença e veja a localização.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chá de Lingerie 🍋">
+<meta property="og:description" content="Sábado, 31/10, às 14h30 · Fábula de Doces. Toque para confirmar presença e ver a localização.">
+<meta property="og:image" content="https://chadaraquel.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://chadaraquel.github.io/">
+<meta name="theme-color" content="#FAE393">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+SC:wght@500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --oliva: #6E6A2C;
+    --oliva-escuro: #55521F;
+    --amarelo: #FAE393;
+    --creme: #FFFDF4;
+    --papel: #FFFEF8;
+    --tinta: #4A4722;
+    --sombra: rgba(85, 82, 31, .18);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: #F3EAC8;
+    color: var(--tinta);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-variant-numeric: lining-nums;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .palco {
+    min-height: 100vh; min-height: 100dvh;
+    display: grid; place-items: center;
+  }
+  #cartao {
+    display: block;
+    width: min(100vw, calc(100dvh * 1080 / 1920));
+    height: auto;
+    box-shadow: 0 18px 50px var(--sombra);
+  }
+  /* Celular em pé: o SVG ocupa a tela inteira; listras e grão, desenhados além do viewBox, preenchem a sobra. */
+  @media (max-aspect-ratio: 1080/1920) {
+    body { background: var(--amarelo); }
+    #cartao { width: 100vw; height: 100vh; height: 100dvh; box-shadow: none; }
+  }
+
+  /* Texto do cartão */
+  #cartao text { font-variant-numeric: lining-nums; }
+  .caps { font-family: 'Cormorant SC', 'Cormorant Garamond', serif; font-weight: 500; fill: var(--oliva); text-anchor: middle; }
+  .script { font-family: 'Pinyon Script', cursive; fill: var(--oliva); text-anchor: middle; }
+  .serif { font-family: 'Cormorant Garamond', serif; fill: var(--oliva); text-anchor: middle; }
+  .rotulo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; fill: var(--oliva); }
+
+  /* Botões do cartão */
+  .botao { cursor: pointer; outline: none; }
+  .botao .disco { transition: transform .18s ease; transform-box: fill-box; transform-origin: center; }
+  .botao:hover .disco, .botao:focus-visible .disco { transform: scale(1.06); }
+  .botao:active .disco { transform: scale(.95); }
+  .botao:focus-visible .anel { stroke: var(--oliva-escuro); stroke-width: 4; }
+  .pulso { transform-box: fill-box; transform-origin: center; animation: pulso 2.6s ease-out 1.2s 3; opacity: 0; }
+  @keyframes pulso { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(1.45); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .pulso { animation: none; } }
+  .so-imagem { display: none; }
+
+  /* Modo imagem (?png): cartão em 1080 x 1920 exatos, sem interação */
+  body.png { background: none; }
+  body.png .palco { display: block; min-height: 0; }
+  body.png #cartao { width: 1080px; height: 1920px; box-shadow: none; }
+  body.png .so-imagem { display: inline; }
+  body.png .pulso { display: none; }
+
+  /* Folha de confirmação */
+  .fundo {
+    position: fixed; inset: 0; z-index: 10;
+    background: rgba(74, 64, 18, .34);
+    display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .25s ease;
+  }
+  .fundo.aberto { opacity: 1; pointer-events: auto; }
+  .folha {
+    width: min(100%, 520px);
+    max-height: 88dvh; overflow: auto;
+    background: var(--papel);
+    border-radius: 28px 28px 0 0;
+    border-top: 3px solid var(--amarelo);
+    padding: 26px 26px calc(28px + env(safe-area-inset-bottom));
+    transform: translateY(24px); transition: transform .25s ease;
+    box-shadow: 0 -10px 40px rgba(60, 57, 20, .22);
+  }
+  .fundo.aberto .folha { transform: none; }
+  @media (min-width: 600px) {
+    .fundo { align-items: center; }
+    .folha { border-radius: 28px; border: 3px solid var(--amarelo); }
+  }
+  .folha h2 {
+    font-family: 'Pinyon Script', cursive; font-weight: 400;
+    color: var(--oliva); font-size: 44px; line-height: 1.1;
+    margin: 4px 36px 6px 0;
+  }
+  .folha p { font-size: 20px; line-height: 1.4; margin: 8px 0 14px; color: var(--tinta); }
+  .fechar {
+    position: absolute; right: 14px; top: 14px;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 0; background: transparent; color: var(--oliva);
+    font-size: 30px; line-height: 1; cursor: pointer;
+  }
+  .folha { position: relative; }
+  label { display: block; font-size: 17px; font-weight: 600; letter-spacing: .04em; color: var(--oliva); margin: 14px 0 6px; text-transform: uppercase; }
+  input, textarea {
+    width: 100%; font: inherit; font-size: 20px; color: var(--tinta);
+    padding: 12px 14px; border-radius: 14px;
+    border: 1.5px solid #D9D0A6; background: #fff;
+  }
+  input:focus, textarea:focus { outline: 2px solid var(--oliva); outline-offset: 1px; }
+  textarea { min-height: 84px; resize: vertical; }
+  .acoes { display: grid; gap: 10px; margin-top: 20px; }
+  .btn {
+    font: inherit; font-size: 21px; font-weight: 600;
+    padding: 14px 18px; border-radius: 999px; cursor: pointer;
+    border: 1.5px solid var(--oliva); background: transparent; color: var(--oliva);
+    text-align: center; text-decoration: none; display: block;
+  }
+  .btn.principal { background: var(--oliva); color: #fff; }
+  .btn:active { transform: scale(.98); }
+  .erro { color: #9B3B1E; font-size: 17px; min-height: 1em; margin: 8px 0 0; }
+  .ok { text-align: center; }
+  .ok .limao { font-size: 46px; margin: 4px 0; }
+  .tamanhos { display: grid; grid-template-columns: 1fr auto; gap: 0; margin: 10px 0 6px; border-top: 1px solid #ECE3BD; }
+  .tamanhos dt, .tamanhos dd { margin: 0; padding: 12px 2px; border-bottom: 1px solid #ECE3BD; font-size: 20px; }
+  .tamanhos dd { font-weight: 700; color: var(--oliva); text-align: right; }
+  .nota { font-size: 18px; font-style: italic; color: #6A6640; }
+</style>
+</head>
+<body>
+<main class="palco">
+<svg id="cartao" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="titulo-cartao">
+  <title id="titulo-cartao">Convite: Chá de Lingerie, sábado, 31 de outubro, às 14h30, na Fábula de Doces</title>
+  <defs>
+    <pattern id="listras" width="180" height="1920" patternUnits="userSpaceOnUse">
+      <rect width="90" height="1920" fill="#FAE393"/>
+      <rect x="90" width="90" height="1920" fill="#FFFDF4"/>
+    </pattern>
+
+    <!-- Aquarela: borda irregular + grão de papel -->
+    <filter id="aquarela" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="3" seed="4" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="9" xChannelSelector="R" yChannelSelector="G" result="borda"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="9" result="grao"/>
+      <feColorMatrix in="grao" type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.3  0 0 0 0 0.05  0 0 0 -1.4 0.95" result="grao2"/>
+      <feComposite in="grao2" in2="borda" operator="in" result="grao3"/>
+      <feComponentTransfer in="grao3" result="grao4"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="11" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 0.93  0 0 0 2.2 -0.85" result="claro"/>
+      <feComposite in="claro" in2="borda" operator="in" result="claro2"/>
+      <feComponentTransfer in="claro2" result="claro3"><feFuncA type="linear" slope="0.26"/></feComponentTransfer>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.45  0 0 0 0 0.1  0 0 0 -2.4 1.05" result="escuro"/>
+      <feComposite in="escuro" in2="borda" operator="in" result="escuro2"/>
+      <feComponentTransfer in="escuro2" result="escuro3"><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode in="borda"/><feMergeNode in="claro3"/><feMergeNode in="escuro3"/><feMergeNode in="grao4"/></feMerge>
+    </filter>
+    <filter id="macio" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="papel" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.4  0 0 0 0 0.36  0 0 0 0 0.15  0 0 0 0.9 -0.35"/>
+    </filter>
+
+    <radialGradient id="gLimao" cx="0.38" cy="0.32" r="0.78">
+      <stop offset="0" stop-color="#FFF8C9"/>
+      <stop offset="0.38" stop-color="#FBE06A"/>
+      <stop offset="0.78" stop-color="#F0C63A"/>
+      <stop offset="1" stop-color="#DDAA2C"/>
+    </radialGradient>
+    <radialGradient id="gLimao2" cx="0.42" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#FFF6BC"/>
+      <stop offset="0.45" stop-color="#F7DE6A"/>
+      <stop offset="0.85" stop-color="#E8C13E"/>
+      <stop offset="1" stop-color="#C9A52F"/>
+    </radialGradient>
+    <linearGradient id="gFolha" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0" stop-color="#4E6B43"/>
+      <stop offset="0.55" stop-color="#6F8C5B"/>
+      <stop offset="1" stop-color="#A9BD8C"/>
+    </linearGradient>
+    <linearGradient id="gFolha2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6A8458"/>
+      <stop offset="0.6" stop-color="#94AC7A"/>
+      <stop offset="1" stop-color="#C5D3AA"/>
+    </linearGradient>
+
+    <clipPath id="corteLimao"><path d="M-122,-3 C-114,-11 -106,-13 -99,-22 C-88,-63 -46,-83 0,-83 C48,-83 91,-62 101,-22 C107,-14 115,-10 122,-2 C115,6 107,10 101,21 C91,62 48,82 0,82 C-46,82 -88,62 -99,22 C-106,12 -114,8 -122,-3 Z"/></clipPath>
+    <!-- Limão centrado na origem, eixo maior em x (240 x 164) -->
+    <g id="limao">
+      <path filter="url(#aquarela)" fill="url(#gLimao)" d="M-122,-3 C-114,-11 -106,-13 -99,-22 C-88,-63 -46,-83 0,-83 C48,-83 91,-62 101,-22 C107,-14 115,-10 122,-2 C115,6 107,10 101,21 C91,62 48,82 0,82 C-46,82 -88,62 -99,22 C-106,12 -114,8 -122,-3 Z"/>
+      <g clip-path="url(#corteLimao)"><path fill="none" stroke="#D29F24" stroke-opacity=".35" stroke-width="5" filter="url(#macio)" d="M-99,22 C-88,62 -46,82 0,82 C48,82 91,62 101,21"/></g>
+      <g clip-path="url(#corteLimao)"><ellipse cx="-28" cy="-38" rx="46" ry="20" fill="#FFFDF0" opacity=".65" filter="url(#macio)" transform="rotate(-12)"/></g>
+      <circle cx="30" cy="10" r="2.2" fill="#D9A72E" opacity=".35"/>
+      <circle cx="12" cy="36" r="1.8" fill="#D9A72E" opacity=".3"/>
+      <circle cx="54" cy="-14" r="1.8" fill="#D9A72E" opacity=".3"/>
+    </g>
+    <g id="limao2">
+      <path filter="url(#aquarela)" fill="url(#gLimao2)" d="M-122,-3 C-114,-11 -106,-13 -99,-22 C-88,-63 -46,-83 0,-83 C48,-83 91,-62 101,-22 C107,-14 115,-10 122,-2 C115,6 107,10 101,21 C91,62 48,82 0,82 C-46,82 -88,62 -99,22 C-106,12 -114,8 -122,-3 Z"/>
+      <g clip-path="url(#corteLimao)"><path fill="none" stroke="#C3962A" stroke-opacity=".35" stroke-width="5" filter="url(#macio)" d="M-99,22 C-88,62 -46,82 0,82 C48,82 91,62 101,21"/></g>
+      <g clip-path="url(#corteLimao)"><ellipse cx="-22" cy="-40" rx="44" ry="18" fill="#FFFDF0" opacity=".6" filter="url(#macio)" transform="rotate(-10)"/></g>
+    </g>
+    <!-- Folha apontando para +x a partir da origem (comprimento ~170) -->
+    <g id="folha">
+      <path filter="url(#aquarela)" fill="url(#gFolha)" d="M0,0 C28,-28 92,-44 172,-8 C150,4 118,28 78,32 C44,34 16,20 0,0 Z"/>
+      <path fill="none" stroke="#EEF3DE" stroke-opacity=".55" stroke-width="2.2" d="M6,0 C52,-4 110,-10 164,-8"/>
+    </g>
+    <g id="folha2">
+      <path filter="url(#aquarela)" fill="url(#gFolha2)" d="M0,0 C30,-24 96,-36 160,-4 C136,8 104,26 70,28 C40,29 14,16 0,0 Z"/>
+      <path fill="none" stroke="#F4F7E8" stroke-opacity=".5" stroke-width="2" d="M6,0 C50,-3 104,-8 152,-5"/>
+    </g>
+    <g id="flor">
+      <g fill="#FFFFFF" stroke="#E3DCC4" stroke-width="1.2">
+        <ellipse cx="0" cy="-13" rx="8" ry="13"/>
+        <ellipse cx="0" cy="-13" rx="8" ry="13" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-13" rx="8" ry="13" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-13" rx="8" ry="13" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-13" rx="8" ry="13" transform="rotate(288)"/>
+      </g>
+      <circle r="5.5" fill="#EFCB4E"/>
+      <circle r="2" cx="-1" cy="-1" fill="#B59A34"/>
+    </g>
+    <g id="botao-flor">
+      <ellipse cx="0" cy="0" rx="6" ry="10" fill="#FFFFFF" stroke="#E3DCC4" stroke-width="1.2"/>
+      <path d="M0,10 L0,26" stroke="#7D9565" stroke-width="2"/>
+    </g>
+
+    <!-- Arcos para os rótulos curvos dos botões -->
+    <path id="arco-rsvp" d="M280,1395 A110,110 0 0 1 500,1395"/>
+    <path id="arco-local" d="M580,1395 A110,110 0 0 1 800,1395"/>
+  </defs>
+
+  <!-- Fundo listrado e arco -->
+  <rect y="-1500" width="1080" height="4920" fill="url(#listras)"/>
+  <path d="M120,1790 L120,590 A420,420 0 0 1 960,590 L960,1790 Z" fill="#FFFEF8" stroke="#8A8545" stroke-width="2.5"/>
+
+  <!-- Ramo de limões, alto à direita -->
+  <g id="ramo-alto">
+    <path d="M548,52 C610,70 690,118 760,158 C800,180 836,196 872,214" fill="none" stroke="#8C8A58" stroke-width="5" stroke-linecap="round"/>
+    <path d="M640,96 C636,70 640,50 650,34" fill="none" stroke="#8C8A58" stroke-width="3.5" stroke-linecap="round"/>
+    <use href="#folha" transform="translate(648,40) rotate(-38) scale(1.05)"/>
+    <use href="#folha2" transform="translate(700,128) rotate(118) scale(1.02)"/>
+    <use href="#folha" transform="translate(770,160) rotate(-68) scale(1.1)"/>
+    <use href="#limao2" transform="translate(1030,300) rotate(58) scale(0.98)"/>
+    <use href="#limao" transform="translate(930,190) rotate(-12) scale(1.02)"/>
+    <use href="#limao" transform="translate(872,352) rotate(74) scale(1.0)"/>
+    <use href="#folha2" transform="translate(934,430) rotate(72) scale(0.85)"/>
+    <use href="#folha" transform="translate(960,380) rotate(62) scale(1.0)"/>
+    <use href="#folha2" transform="translate(1000,420) rotate(30) scale(0.8)"/>
+    <use href="#flor" transform="translate(1010,470) scale(1.05)"/>
+    <use href="#botao-flor" transform="translate(1040,436) rotate(-20)"/>
+    <use href="#flor" transform="translate(705,168) scale(.8)"/>
+  </g>
+
+  <!-- Ramo de limões, baixo à esquerda -->
+  <g id="ramo-baixo">
+    <path d="M40,1660 C80,1740 130,1800 220,1850 C300,1890 420,1900 560,1880" fill="none" stroke="#8C8A58" stroke-width="5" stroke-linecap="round"/>
+    <use href="#folha2" transform="translate(96,1720) rotate(-108) scale(1.05)"/>
+    <use href="#folha" transform="translate(40,1680) rotate(-80) scale(0.95)"/>
+    <use href="#folha" transform="translate(420,1894) rotate(-22) scale(1.05)"/>
+    <use href="#folha2" transform="translate(470,1885) rotate(10) scale(.85)"/>
+    <use href="#limao" transform="translate(120,1790) rotate(-68) scale(1.06)"/>
+    <use href="#limao2" transform="translate(300,1860) rotate(12) scale(1.02)"/>
+    <use href="#folha" transform="translate(200,1830) rotate(-150) scale(0.9)"/>
+    <use href="#folha2" transform="translate(230,1800) rotate(-40) scale(0.9)"/>
+    <use href="#flor" transform="translate(390,1810) scale(.95)"/>
+    <use href="#botao-flor" transform="translate(360,1780) rotate(-25) scale(.9)"/>
+  </g>
+
+  <!-- Grão de papel sobre tudo -->
+  <rect y="-1500" width="1080" height="4920" filter="url(#papel)" opacity=".35" pointer-events="none"/>
+
+  <!-- Texto -->
+  <text id="saudacao" class="caps" x="540" y="436" font-size="34" letter-spacing="3"></text>
+  <text class="script" x="540" y="610" font-size="172">Chá de</text>
+  <text class="script" x="540" y="780" font-size="172">Lingerie</text>
+
+  <g id="data">
+    <text class="caps" x="540" y="926" font-size="32" letter-spacing="3">Outubro</text>
+    <text class="serif" x="540" y="1024" font-size="112" font-weight="700">31</text>
+    <line x1="232" y1="948" x2="438" y2="948" stroke="#B9B48A" stroke-width="2"/>
+    <line x1="232" y1="1030" x2="438" y2="1030" stroke="#B9B48A" stroke-width="2"/>
+    <line x1="642" y1="948" x2="848" y2="948" stroke="#B9B48A" stroke-width="2"/>
+    <line x1="642" y1="1030" x2="848" y2="1030" stroke="#B9B48A" stroke-width="2"/>
+    <text class="caps" x="335" y="1000" font-size="36" letter-spacing="2">Sábado</text>
+    <text class="caps" x="745" y="1000" font-size="36" letter-spacing="2">Às 14h30</text>
+  </g>
+
+  <text class="caps" font-size="36" letter-spacing="1.2">
+    <tspan x="540" y="1118" font-weight="600" font-size="40">Fábula de Doces</tspan>
+    <tspan x="540" y="1166">Av. Fernando Corrêa da Costa, 1178</tspan>
+    <tspan x="540" y="1212">Pico do Amor · Cuiabá</tspan>
+  </text>
+
+  <!-- Botões: confirmar presença (abre a folha) e localização (abre o mapa) -->
+  <g class="botao" id="btn-rsvp" role="button" tabindex="0" aria-label="Confirmar presença">
+    <text class="rotulo" font-size="33" letter-spacing=".5"><textPath href="#arco-rsvp" startOffset="50%" text-anchor="middle">Confirmar presença</textPath></text>
+    <circle class="pulso" cx="390" cy="1395" r="70" fill="none" stroke="#8A8545" stroke-width="3"/>
+    <g class="disco">
+      <circle class="anel" cx="390" cy="1395" r="70" fill="#7C7836" stroke="#E7C84F" stroke-width="3"/>
+      <g transform="translate(390,1398)" fill="#FFFEF6">
+        <circle cx="15" cy="-19" r="11" opacity=".82"/>
+        <path d="M-2,24 C-2,6 5,-3 15,-3 C27,-3 35,6 35,22 Z" opacity=".82"/>
+        <circle cx="-9" cy="-13" r="14"/>
+        <path d="M-37,30 C-37,9 -26,0 -9,0 C8,0 19,9 19,30 Z"/>
+      </g>
+    </g>
+  </g>
+
+  <a id="btn-local" class="botao" href="#" target="_blank" rel="noopener" aria-label="Ver a localização no mapa">
+    <text class="rotulo" font-size="33" letter-spacing=".5"><textPath href="#arco-local" startOffset="50%" text-anchor="middle">Localização</textPath></text>
+    <circle class="pulso" cx="690" cy="1395" r="70" fill="none" stroke="#8A8545" stroke-width="3"/>
+    <g class="disco">
+      <circle class="anel" cx="690" cy="1395" r="70" fill="#7C7836" stroke="#E7C84F" stroke-width="3"/>
+      <g transform="translate(690,1391)">
+        <path fill="#FFFEF6" d="M0,-36 C-20,-36 -33,-21 -33,-4 C-33,20 0,40 0,40 C0,40 33,20 33,-4 C33,-21 20,-36 0,-36 Z"/>
+        <path fill="#7C7836" d="M0,8 C-12,0 -15,-9 -9,-14 C-5,-17 -1,-15 0,-11 C1,-15 5,-17 9,-14 C15,-9 12,0 0,8 Z"/>
+      </g>
+    </g>
+  </a>
+
+  <text class="script" x="540" y="1580" font-size="74">Espero por você!</text>
+  <text class="caps" x="540" y="1652" font-size="30" letter-spacing="2">Confirme até 25 de outubro</text>
+</svg>
+</main>
+
+<div class="fundo" id="fundo-rsvp" aria-hidden="true">
+  <section class="folha" role="dialog" aria-modal="true" aria-labelledby="t-rsvp">
+    <button class="fechar" type="button" aria-label="Fechar" data-fechar>×</button>
+    <div id="rsvp-form">
+      <h2 id="t-rsvp">Confirmar presença</h2>
+      <p><span id="oi"></span>Sábado, 31 de outubro, às 14h30, na Fábula de Doces. Confirme até 25 de outubro.</p>
+      <label for="nome">Seu nome</label>
+      <input id="nome" autocomplete="name" placeholder="Como a Raquel te chama">
+      <label for="recado">Recadinho para a noiva <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+      <textarea id="recado" placeholder="Mal posso esperar!"></textarea>
+      <p class="erro" id="erro" role="alert"></p>
+      <div class="acoes">
+        <button class="btn principal" type="button" data-resposta="vou">Vou, com certeza! 🍋</button>
+        <button class="btn" type="button" data-resposta="nao">Não vou conseguir ir</button>
+      </div>
+    </div>
+    <div id="rsvp-ok" class="ok" hidden>
+      <div class="limao" aria-hidden="true">🍋</div>
+      <h2 id="ok-titulo" style="margin-right:0">Presença confirmada!</h2>
+      <p id="ok-texto"></p>
+      <div class="acoes">
+        <a class="btn principal" id="ok-agenda" target="_blank" rel="noopener">Salvar na agenda</a>
+        <button class="btn" type="button" data-fechar>Voltar ao convite</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const CONFIG = {
+    // Vazio: a confirmação vai pelo WhatsApp da Raquel, com o nome e o recado na mensagem.
+    endpoint: '',
+    whatsapp: '5565996488383',
+    mapa: 'https://www.google.com/maps/search/?api=1&query=' +
+      encodeURIComponent('Fábula de Doces, Av. Fernando Corrêa da Costa, 1178, Pico do Amor, Cuiabá - MT'),
+    agenda: 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+      '&text=' + encodeURIComponent('Chá de Lingerie') +
+      '&dates=20261031T183000Z/20261031T213000Z' +
+      '&location=' + encodeURIComponent('Fábula de Doces, Av. Fernando Corrêa da Costa, 1178, Pico do Amor, Cuiabá - MT') +
+      '&details=' + encodeURIComponent('Convite: https://chadaraquel.github.io/'),
+  };
+
+  if (new URLSearchParams(location.search).has('png')) document.body.classList.add('png');
+
+  document.getElementById('btn-local').setAttribute('href', CONFIG.mapa);
+  document.getElementById('ok-agenda').href = CONFIG.agenda;
+
+  let ultimoFoco = null;
+  function abrir(id) {
+    ultimoFoco = document.activeElement;
+    const f = document.getElementById(id);
+    f.classList.add('aberto'); f.setAttribute('aria-hidden', 'false');
+    const alvo = f.querySelector('input, .btn.principal, .btn');
+    setTimeout(() => alvo && alvo.focus({ preventScroll: true }), 50);
+  }
+  function fechar() {
+    document.querySelectorAll('.fundo.aberto').forEach(f => { f.classList.remove('aberto'); f.setAttribute('aria-hidden', 'true'); });
+    if (ultimoFoco) ultimoFoco.focus({ preventScroll: true });
+  }
+  function ligar(id, acao) {
+    const el = document.getElementById(id);
+    el.addEventListener('click', acao);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); acao(); } });
+  }
+  ligar('btn-rsvp', () => abrir('fundo-rsvp'));
+  document.querySelectorAll('[data-fechar]').forEach(b => b.addEventListener('click', fechar));
+  document.querySelectorAll('.fundo').forEach(f => f.addEventListener('click', e => { if (e.target === f) fechar(); }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fechar(); });
+
+  const campoNome = document.getElementById('nome');
+  const campoRecado = document.getElementById('recado');
+  try { campoNome.value = localStorage.getItem('cha-nome') || ''; } catch (_) {}
+
+  function mostrarOk(resposta, nome) {
+    document.getElementById('rsvp-form').hidden = true;
+    document.getElementById('rsvp-ok').hidden = false;
+    const vou = resposta === 'vou';
+    document.getElementById('ok-titulo').textContent = vou ? 'Presença confirmada!' : 'Que pena!';
+    document.getElementById('ok-agenda').hidden = !vou;
+    const primeiro = nome.split(' ')[0];
+    document.getElementById('ok-texto').textContent = CONFIG.endpoint
+      ? (vou ? `Obrigada, ${primeiro}! A Raquel já vai saber. Nos vemos no dia 31/10, às 14h30.`
+             : `Obrigada por avisar, ${primeiro}. A Raquel vai sentir sua falta!`)
+      : 'Abrimos o WhatsApp da Raquel com a mensagem pronta. É só tocar em enviar.';
+  }
+
+  const botoesResposta = document.querySelectorAll('[data-resposta]');
+
+  async function responder(resposta) {
+    const nome = campoNome.value.trim().replace(/\s+/g, ' ');
+    const recado = campoRecado.value.trim();
+    const erro = document.getElementById('erro');
+    if (!nome) { erro.textContent = 'Escreva seu nome, por favor.'; campoNome.focus(); return; }
+    erro.textContent = '';
+    try { localStorage.setItem('cha-nome', nome); } catch (_) {}
+
+    const texto = resposta === 'vou'
+      ? `Oi, Raquel! Aqui é ${nome} e confirmo presença no seu Chá de Lingerie, sábado, 31/10, às 14h30, na Fábula de Doces. 🍋`
+      : `Oi, Raquel! Aqui é ${nome}. Infelizmente não vou conseguir ir ao seu Chá de Lingerie no dia 31/10.`;
+    const whatsapp = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(texto + (recado ? '\n\n' + recado : ''))}`;
+
+    if (CONFIG.endpoint) {
+      // Confirmação direta: grava na planilha e a Raquel é avisada pelo vigia (avisar_raquel.py).
+      botoesResposta.forEach(b => { b.disabled = true; });
+      try {
+        await fetch(CONFIG.endpoint, {
+          method: 'POST', mode: 'no-cors',
+          body: new URLSearchParams({ nome, resposta, recado, codigo }),
+        });
+        mostrarOk(resposta, nome);
+      } catch (_) {
+        // Sem rede: o toque seguinte é da própria pessoa, então o navegador não bloqueia o WhatsApp.
+        erro.textContent = 'Não consegui registrar agora (sem internet?). ';
+        const link = document.createElement('a');
+        link.href = whatsapp; link.target = '_blank'; link.rel = 'noopener';
+        link.textContent = 'Avise a Raquel pelo WhatsApp';
+        erro.append(link);
+      } finally {
+        botoesResposta.forEach(b => { b.disabled = false; });
+      }
+      return;
+    }
+    window.open(whatsapp, '_blank');
+    mostrarOk(resposta, nome);
+  }
+  botoesResposta.forEach(b => b.addEventListener('click', () => responder(b.dataset.resposta)));
+
+  // chadaraquel.github.io/#confirmar abre direto a folha de confirmação.
+  if (location.hash === '#confirmar') abrir('fundo-rsvp');
+
+  // Link por convidada (?c=código): o nome vem da planilha, não da página, para a lista não ficar pública.
+  const codigo = (new URLSearchParams(location.search).get('c') || '').trim().slice(0, 40);
+  if (codigo && CONFIG.endpoint) {
+    fetch(`${CONFIG.endpoint}?c=${encodeURIComponent(codigo)}`)
+      .then(r => r.json())
+      .then(d => {
+        if (!d.ok || !d.nome) return;
+        document.getElementById('saudacao').textContent = `para ${d.nome}`;
+        document.getElementById('oi').textContent = `Oi, ${d.nome}! `;
+        if (!campoNome.value) campoNome.value = d.nome;
+      })
+      .catch(() => {});
+  }
+</script>
+</body>
+</html>
