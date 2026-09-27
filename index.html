@@ -365,7 +365,7 @@
 <script>
   const CONFIG = {
     // Vazio: a confirmação vai pelo WhatsApp da Raquel, com o nome e o recado na mensagem.
-    endpoint: '',
+    endpoint: 'https://script.google.com/macros/s/AKfycbyAXmo2RiM4PkDjSkAs7SOox_x3owz0ZkAE5DxTpQ6MJocaiz2KEgcJ8VjBiuGr1mFBGg/exec',
     whatsapp: '5565996488383',
     mapa: 'https://www.google.com/maps/search/?api=1&query=' +
       encodeURIComponent('Fábula de Doces, Av. Fernando Corrêa da Costa, 1178, Pico do Amor, Cuiabá - MT'),
@@ -467,7 +467,8 @@
   // Link por convidada (?c=código): o nome vem da planilha, não da página, para a lista não ficar pública.
   const codigo = (new URLSearchParams(location.search).get('c') || '').trim().slice(0, 40);
   if (codigo && CONFIG.endpoint) {
-    fetch(`${CONFIG.endpoint}?c=${encodeURIComponent(codigo)}`)
+    // `c` é reservado do Apps Script; lá o parâmetro se chama `convidada`.
+    fetch(`${CONFIG.endpoint}?convidada=${encodeURIComponent(codigo)}`)
       .then(r => r.json())
       .then(d => {
         if (!d.ok || !d.nome) return;
